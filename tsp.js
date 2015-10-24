@@ -117,7 +117,7 @@ function getBestLocation (matrix, list){
 function getChild (location) {
   var l = location.length;
   var temp = new Array(l);
-  var start,stop;
+  var start,stop,random;
   do{
     start = randomSingle(l);
     stop = randomSingle(l);
@@ -131,14 +131,12 @@ function getChild (location) {
     if (i >= start && i <= stop)
       temp[i] = location[i];
     else if (i<start){
-      var random;
       do{
         random  = randomSingle(l);
       }while (isExist(location,start,stop,random)||isExist(temp,0,i-1,random));
       temp[i] = random;
     }
     else if (i > stop){
-      var random;
       do{
         random  = randomSingle(l);
       }while (isExist(temp,0,i-1,random));
@@ -170,10 +168,11 @@ function tsp (matrix,size,loop){
   for (var i = 0; i < loop; i++){
     var child = getChild(best);
     var worst = getWorstLocation(matrix,list);
-    if (getLocationValue(matrix,child) < getLocationValue(matrix,list[worst]))
+    if (getLocationValue(matrix,child) < getLocationValue(matrix,list[worst])){
       list[worst] = child;
-    best = getBestLocation(matrix,list);
-    console.log(best + ": " + getLocationValue(matrix,best));
+      best = getBestLocation(matrix,list);
+      console.log(best + ": " + getLocationValue(matrix,best));
+    }
   }
   var end = new Date().getTime();
   alert('Execution time: ' + (end - start));
